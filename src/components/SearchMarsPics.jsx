@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 export default class SearchMarsPics extends Component {
-  state = { sol: null };
+  state = { sol: null, camera: "" };
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
@@ -17,18 +17,44 @@ export default class SearchMarsPics extends Component {
           />
         </label>
         <button>Submit your search</button>
+
+        <section>
+          Please select your preferred camera:
+          <label htmlFor="">
+            Front Hazard Avoidance Camera
+            <input
+              type="radio"
+              name="camera"
+              value="FHAZ"
+              onChange={this.handleChange}
+            />
+          </label>
+          <label htmlFor="">
+            Rear Hazard Avoidance Camera
+            <input
+              type="radio"
+              name="camera"
+              value="RHAZ"
+              onChange={this.handleChange}
+            />
+          </label>
+        </section>
       </form>
     );
   }
   handleChange = (event) => {
     const { name, value } = event.target;
+    console.log(name, value);
+
     this.setState({ [name]: value });
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { sol } = this.state;
+    console.log(this.state);
+
+    const { sol, camera } = this.state;
     const { fetchPictures } = this.props;
-    fetchPictures(sol);
+    fetchPictures(sol, camera);
   };
 }

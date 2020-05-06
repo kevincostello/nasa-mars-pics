@@ -40,9 +40,9 @@ class PictureList extends Component {
     }
   }
 
-  fetchPictures = (sol) => {
+  fetchPictures = (sol, camera) => {
     const { rover } = this.props;
-    api.getPictures(rover, sol).then((photos) => {
+    api.getPictures(rover, sol, camera).then((photos) => {
       console.log(photos);
       this.setState({ photos, isLoading: false });
     });
