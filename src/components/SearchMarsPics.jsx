@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class SearchMarsPics extends Component {
   state = {
-    sol: null,
+    sol: "",
     camera: "",
     curiosity: {
       FHAZ: "Front Hazard Avoidance Camera",
@@ -32,48 +32,43 @@ export default class SearchMarsPics extends Component {
   };
   render() {
     let roverCam = this.state["curiosity"];
-    const { rover, max_sol, loadedSol } = this.props;
-    const { sol } = this.state;
+    const { rover, max_sol } = this.props;
+    const { sol, camera } = this.state;
     if (rover) roverCam = this.state[rover];
 
     return (
-      <>
-        <form onSubmit={this.handleSol}>
-          <h3>Search for Mars Pics</h3>
-          <label htmlFor="">
-            Sol date:
-            <input
-              type="number"
-              min="0"
-              max={max_sol}
-              name="sol"
-              onChange={this.handleChange}
-            />
-          </label>
-          <button>Show cameras on Sol date</button>
-        </form>
-        <form onSubmit={this.handleSubmit}>
-          {loadedSol && (
-            <section>
-              <p>Please select your preferred camera:</p>
-              {Object.keys(roverCam).map((camera) => {
-                return (
-                  <label htmlFor="" key={camera}>
-                    {roverCam[camera]}
-                    <input
-                      type="radio"
-                      name="camera"
-                      value={camera}
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                );
-              })}
-              <button>Submit your search</button>
-            </section>
-          )}
-        </form>
-      </>
+      <form onSubmit={this.handleSubmit}>
+        <h3>Search for Mars Pics</h3>
+        <label htmlFor="">
+          Sol date:
+          <input
+            type="number"
+            min="0"
+            max={max_sol}
+            name="sol"
+            onChange={this.handleChange}
+            value={sol}
+          />
+        </label>
+
+        <section>
+          <p>Please select your preferred camera:</p>
+          {Object.keys(roverCam).map((camera) => {
+            return (
+              <label htmlFor="" key={camera}>
+                {roverCam[camera]}
+                <input
+                  type="radio"
+                  name="camera"
+                  value={camera}
+                  onChange={this.handleChange}
+                />
+              </label>
+            );
+          })}
+          <button>Submit your search</button>
+        </section>
+      </form>
     );
   }
   handleChange = (event) => {
@@ -83,15 +78,6 @@ export default class SearchMarsPics extends Component {
     this.setState({ [name]: value });
   };
 
-  handleSol = (event) => {
-    event.preventDefault();
-    console.log(this.state);
-
-    const { sol, camera } = this.state;
-    const { fetchCamerasOnSol } = this.props;
-    fetchCamerasOnSol(sol, camera);
-  };
-
   handleSubmit = (event) => {
     event.preventDefault();
     console.log(this.state);
@@ -99,5 +85,6 @@ export default class SearchMarsPics extends Component {
     const { sol, camera } = this.state;
     const { fetchPictures } = this.props;
     fetchPictures(sol, camera);
+    this.setState({ sol: "", camera: "" });
   };
 }

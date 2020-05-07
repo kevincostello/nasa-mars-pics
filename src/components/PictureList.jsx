@@ -8,12 +8,10 @@ class PictureList extends Component {
     photos: [],
     isLoading: true,
     max_sol: null,
-    loadedSol: true,
   };
   render() {
     const { rover } = this.props;
-    const { photos, isLoading, max_sol, loadedSol } = this.state;
-    console.log(max_sol);
+    const { photos, isLoading, max_sol } = this.state;
 
     if (isLoading) return <p>Loading some amazing martian pics!..........</p>;
     return (
@@ -28,8 +26,6 @@ class PictureList extends Component {
           fetchPictures={this.fetchPictures}
           rover={rover}
           max_sol={max_sol}
-          loadedSol={loadedSol}
-          fetchCamerasOnSol={this.fetchCamerasOnSol}
         />
         <ul>
           {photos.map((picture) => {
@@ -67,22 +63,6 @@ class PictureList extends Component {
     const { rover } = this.props;
     api.getMaxSol(rover).then(({ max_sol }) => {
       this.setState({ max_sol });
-    });
-  };
-
-  fetchCamerasOnSol = (sol, camera) => {
-    const { rover } = this.props;
-    api.getMaxSol(rover).then(({ photos }) => {
-      console.log(photos);
-      const cameras = photos.map((solCam) => {
-        console.log(typeof solCam.sol, typeof sol);
-
-        if (solCam.sol === Number(sol)) console.log(solCam.sol);
-
-        return solCam;
-      });
-
-      //  this.setState({ max_sol });
     });
   };
 }
